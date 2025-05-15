@@ -50,7 +50,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       body: Column(
         children: [
-          const PermissionWidget(Permission.notification),
           EventCalendar(onSelectDay: _updateSelectedDay),
           Expanded(
             child: EventList(events: eventList),

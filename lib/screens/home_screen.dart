@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const PermissionWidget(Permission.notification),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
