@@ -205,7 +205,17 @@ class HDXEvent {
   String displayDate() => DateFormat('EEE, MMM d, yyyy').format(date);
 
   /// Format the [date] as a day of the week
-  String displayHeader() => DateFormat('EEEE').format(date);
+  String displayHeader() {
+    DateTime now = DateTime.now();
+    int difference = date.difference(now).inDays;
+    if (difference > 13) {
+      return DateFormat('EEEE, MMM d').format(date);
+    } else if (difference > 6) {
+      return "Next ${DateFormat('EEEE').format(date)}";
+    } else {
+      return DateFormat('EEEE').format(date);
+    }
+  }
 
   /// Formats the [applyDeadline] in a human-readable form.
   ///

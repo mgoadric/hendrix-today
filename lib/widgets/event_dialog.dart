@@ -215,6 +215,20 @@ class EventDialog extends StatelessWidget {
               child: RichDescription(text: event.desc),
             ),
           ),
+          if (event.hip) ...[
+            const SizedBox(height: 5),
+            Row(children: [
+              Icon(
+                Icons.local_activity,
+                color: Theme.of(context).colorScheme.primary,
+                size: 21,
+              ),
+              Text(
+                " This event is HIP approved!",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ]),
+          ],
         ],
       ),
     );
