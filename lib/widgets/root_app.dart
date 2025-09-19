@@ -32,6 +32,7 @@ class _RootAppState extends State<RootApp> {
         child: Builder(builder: (BuildContext context) {
           final themeProvider = Provider.of<ThemeProvider>(context);
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: hendrixTodayLightMode,
             darkTheme: hendrixTodayDarkMode,
             themeMode: themeProvider.themeMode,

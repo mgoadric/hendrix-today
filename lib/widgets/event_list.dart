@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hendrix_today_app/objects/event.dart';
 import 'package:hendrix_today_app/widgets/event_card.dart';
-import 'package:intl/intl.dart';
 
 /// A scrollable [ListView] of [EventCard]s.
 class EventList extends StatelessWidget {
@@ -23,27 +22,16 @@ class EventList extends StatelessWidget {
   }
 
   List<Widget> _eventListing(context, events) {
-    HDXEvent? previousEvent = null;
+    HDXEvent? previousEvent;
     List<Widget> eventList = [];
     for (HDXEvent e in events) {
       if (previousEvent == null) {
-        eventList.add(Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Text(e.displayHeader(),
-              style: Theme.of(context).textTheme.displaySmall),
-        ));
-        eventList.add(EventCard(event: e));
-      } else if (e.matchesDate(previousEvent.date)) {
-        eventList.add(EventCard(event: e));
-      } else {
+        eventList.add(EventHeader(event: e));
+      } else if (!e.matchesDate(previousEvent.date)) {
         eventList.add(const SizedBox(height: 20));
-        eventList.add(Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Text(e.displayHeader(),
-              style: Theme.of(context).textTheme.displaySmall),
-        ));
-        eventList.add(EventCard(event: e));
+        eventList.add(EventHeader(event: e));
       }
+      eventList.add(EventCard(event: e));
       previousEvent = e;
     }
     return eventList;

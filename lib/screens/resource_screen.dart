@@ -46,8 +46,7 @@ class ResourcesScreen extends StatelessWidget {
                   titleString: "submit event",
                   icon: Icons.add,
                   color: Theme.of(context).colorScheme.primary,
-                  url:
-                      'https://forms.office.com/Pages/ResponsePage.aspx?id=jMH2DNLQP0qD0GY9Ygpj020T9lhtzfhCi8WBPrgNg0xURFZXMEEyUzUwR0lNSzZTTDdWWEQwOERSWiQlQCN0PWcu'),
+                  url: 'https://forms.microsoft.com/r/fmXn39MXEQ'),
               const SizedBox(height: 10),
               ResourceButton(
                   key: const Key('ReserveRoom'),

@@ -22,6 +22,8 @@ Future<String> _tryLaunchUrl(String url) async {
 // This checks if you've previously checked Do Not Show Again box
 class DoNotShowBox extends ChangeNotifier {
   static getCheckBox() async {
+    return true;
+    /*
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     bool? isChecked = sharedPreferences.getBool("is_checked");
     if (isChecked == null) {
@@ -29,6 +31,7 @@ class DoNotShowBox extends ChangeNotifier {
     } else {
       return isChecked;
     }
+    */
   }
 
   static void toggleIsChecked(bool isChecked) async {

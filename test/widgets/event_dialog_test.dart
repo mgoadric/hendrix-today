@@ -24,6 +24,7 @@ void main() {
             endPosting: DateTime(2023, 6, 25),
             applyDeadline: DateTime(1234, 5, 6),
             id: 1,
+            hip: false,
           ),
         ),
       ),

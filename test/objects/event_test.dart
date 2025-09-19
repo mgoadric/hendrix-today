@@ -47,6 +47,7 @@ void main() {
       endPosting: DateTime(2022, 12, 27),
       applyDeadline: DateTime(2022, 12, 28),
       id: 1,
+      hip: false,
     ),
     HDXEvent(
       title: "Earlier Event",
@@ -61,6 +62,7 @@ void main() {
       endPosting: DateTime(2022, 12, 31),
       applyDeadline: null,
       id: 2,
+      hip: false,
     ),
   ];
 

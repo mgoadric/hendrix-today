@@ -147,13 +147,43 @@ class HDXEvent {
     if (maybeEventType == null) return null;
     final EventType eventType = maybeEventType;
 
-    final Timestamp? maybeDate = cast(data["date"]);
+    final String? time = cast(data["time"]);
+    int hours = 0;
+    int minutes = 0;
+    if (time != null) {
+      var tsplit = time.split(":");
+      //print("Splitting time...");
+      if (tsplit.isNotEmpty) {
+        hours = int.tryParse(tsplit[0]) ?? 0;
+        //print("Hours is " + hours.toString());
+        if (tsplit.length > 1) {
+          var tsplit2 = tsplit[1].split(" ");
+          if (tsplit2.isNotEmpty) {
+            minutes = int.tryParse(tsplit2[0]) ?? 0;
+            //print("Minutes is " + minutes.toString());
+            if (tsplit2.length > 1 && tsplit2[1].length > 0) {
+              if ((tsplit2[1][0] == 'p' || tsplit2[1][0] == "P") &&
+                  hours < 12) {
+                hours += 12;
+                //print("Adding for pm");
+              }
+              if ((tsplit2[1][0] == 'a' || tsplit2[1][0] == "A") &&
+                  hours == 12) {
+                hours = 0;
+                //print("Midnight event, really?");
+              }
+            }
+          }
+        }
+      }
+    }
+
+    Timestamp? maybeDate = cast(data["date"]);
     if (maybeDate == null) return null;
     final DateTime date = (maybeDate.toDate().isBefore(DateTime.now()))
         ? DateTime.now()
-        : maybeDate.toDate();
+        : maybeDate.toDate().add(Duration(hours: hours, minutes: minutes));
 
-    final String? time = cast(data["time"]);
     final String? location = cast(data["location"]);
 
     final String? maybeContactName = cast(data["contactName"]);
@@ -205,7 +235,17 @@ class HDXEvent {
   String displayDate() => DateFormat('EEE, MMM d, yyyy').format(date);
 
   /// Format the [date] as a day of the week
-  String displayHeader() => DateFormat('EEEE').format(date);
+  String displayHeader() {
+    DateTime now = DateTime.now();
+    int difference = date.difference(now).inDays;
+    if (difference > 13) {
+      return DateFormat('EEEE, MMM d').format(date);
+    } else if (difference > 6) {
+      return "Next ${DateFormat('EEEE').format(date)}";
+    } else {
+      return DateFormat('EEEE').format(date);
+    }
+  }
 
   /// Formats the [applyDeadline] in a human-readable form.
   ///
