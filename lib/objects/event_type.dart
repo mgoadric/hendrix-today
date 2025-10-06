@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 enum EventType {
   event,
   announcement,
+  athletics,
   meeting;
 
   @override
@@ -18,7 +19,9 @@ enum EventType {
         return "Announcement";
       case meeting:
         return "Meeting";
-    }
+      case athletics:
+        return "Athletics";
+      }
   }
 
   /// Reads an [EventType] from a string.
@@ -38,6 +41,8 @@ enum EventType {
       case "meeting":
       case "meetings":
         return meeting;
+      case "athletics":
+        return athletics;
       default:
         return null;
     }
@@ -54,6 +59,8 @@ enum EventType {
         return this == announcement;
       case EventTypeFilter.meetings:
         return this == meeting;
+      case EventTypeFilter.athletics:
+        return this == athletics;
       case EventTypeFilter.all:
         return true;
       case null:
@@ -66,11 +73,13 @@ enum EventType {
   Color color(BuildContext context) {
     switch (this) {
       case event:
-        return Theme.of(context).colorScheme.primary;
+        return  Theme.of(context).colorScheme.primary;
       case announcement:
         return Theme.of(context).colorScheme.secondary;
       case meeting:
         return Theme.of(context).colorScheme.tertiary;
+      case athletics:
+        return Theme.of(context).colorScheme.onError;
     }
   }
 }
@@ -86,6 +95,8 @@ enum EventTypeFilter {
   /// Allows only [EventType.announcement]s.
   announcements,
 
+  athletics,
+
   /// Allows only [EventType.meeting]s.
   meetings;
 
@@ -98,6 +109,8 @@ enum EventTypeFilter {
         return "Announcements";
       case meetings:
         return "Meetings";
+      case athletics:
+        return "Athletics";
       case all:
         return "All";
     }
