@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hendrix_today_app/objects/event.dart';
 import 'package:hendrix_today_app/widgets/rich_description.dart';
+import 'package:intl/intl.dart';
 
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,6 +22,7 @@ import 'package:html/dom.dart' show Document, Node;
 class EventDialog extends StatelessWidget {
   const EventDialog({super.key, required this.event});
   final HDXEvent event;
+
 
   /// Attempts to begin a draft email to the [HDXEvent.contactEmail].
   ///
@@ -91,6 +93,28 @@ class EventDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime date = DateTime(1970);
+    DateTime date2 = DateTime(1970);
+    bool parseFailed = false;
+
+    if (event.time != null){
+      // Parses the time of the event into a start and end time
+      List<String> times = event.time!.split(' - ');
+      times.first = times.first.replaceAll(' ', '');
+      times.first = times.first.toUpperCase();
+      times.last = times.last.replaceAll(' ', '');
+      times.last = times.last.toUpperCase();
+      try{
+        date= DateFormat("hh:mma").parse(times.first);
+        date2= DateFormat("hh:mma").parse(times.last);
+      }
+      catch(e){
+        parseFailed = true;
+      }
+    }
+    if (date2 == date){
+      date2 = date2.add(const Duration(hours:1));
+    }
     return AlertDialog(
       insetPadding: EdgeInsets.symmetric(
           vertical: _dialogSize(context, "v"),
@@ -186,14 +210,23 @@ class EventDialog extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                   onPressed: () {
                     final Event calevent = Event(
-                        title: event.time == null
+                        title: (event.time == null || parseFailed)
                             ? event.title
                             : "${event.title}: ${event.time}",
                         description: event.desc,
                         location: event.location,
-                        startDate: event.date,
-                        endDate: event.date,
-                        allDay: true);
+                        startDate: (event.time == null || parseFailed)
+                        ? event.date
+                        : DateTime(event.date.year,event.date.month, event.date.day,
+                        date.hour, date.minute),
+                        endDate: (event.time == null || parseFailed)
+                        ? event.date.add(const Duration(days:1))
+                        : 
+                        DateTime(event.date.year,event.date.month, event.date.day,
+                        date2.hour, date2.minute),
+                        allDay: (event.time == null || parseFailed)
+                        ? true
+                        : false);
                     Add2Calendar.addEvent2Cal(calevent);
                   },
                   icon: const Icon(Icons.edit_calendar),

@@ -161,7 +161,7 @@ class HDXEvent {
           if (tsplit2.isNotEmpty) {
             minutes = int.tryParse(tsplit2[0]) ?? 0;
             //print("Minutes is " + minutes.toString());
-            if (tsplit2.length > 1 && tsplit2[1].length > 0) {
+            if (tsplit2.length > 1 && tsplit2[1].isNotEmpty) {
               if ((tsplit2[1][0] == 'p' || tsplit2[1][0] == "P") &&
                   hours < 12) {
                 hours += 12;
@@ -180,10 +180,16 @@ class HDXEvent {
 
     Timestamp? maybeDate = cast(data["date"]);
     if (maybeDate == null) return null;
-    final DateTime date = (maybeDate.toDate().isBefore(DateTime.now()))
-        ? DateTime.now()
-        : maybeDate.toDate().add(Duration(hours: hours, minutes: minutes));
-
+    final DateTime date =
+        (maybeDate.toDate().isBefore(DateUtils.dateOnly(DateTime.now())))
+            ? DateUtils.dateOnly(DateTime.now())
+                .add(Duration(hours: hours, minutes: minutes))
+            : maybeDate.toDate().add(Duration(hours: hours, minutes: minutes));
+    if (maybeDate.toDate().isBefore(DateUtils.dateOnly(DateTime.now()))) {
+      print("$title! $hours:$minutes");
+      print(maybeDate.toDate());
+      print(date);
+    }
     final String? location = cast(data["location"]);
 
     final String? maybeContactName = cast(data["contactName"]);
