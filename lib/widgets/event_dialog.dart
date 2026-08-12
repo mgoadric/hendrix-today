@@ -170,7 +170,7 @@ class EventDialog extends StatelessWidget {
                       size: 21,
                     ),
                     Text(
-                      " This event is HIP approved!",
+                      " This event is FYF approved!",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ]),
